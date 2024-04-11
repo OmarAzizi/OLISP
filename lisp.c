@@ -1,7 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-/* Declare a buffer for user input of size 2048 */
-static char input[2048];
+/* 
+    This library will help us create a better interactive prompt on linux by allowing editing 
+    and recording the history of inputs so that they can be retrieved with the up and down arrows 
+*/
+#include <editline/readline.h>
+#include <editline/history.h>
 
 int main(int argc, char** argv) {
     /* Print Version and Exit Information */
@@ -10,9 +15,10 @@ int main(int argc, char** argv) {
 
     /* REPL Loop */
     while (1) {
-        fputs("OLISP> ", stdout);
-        fgets(input, 2048, stdin);
-        printf("No you're a %s", input);
+        char* input = readline("OLISP> ");
+        add_history(input); /* Adding input to history so it can be retrived */
+        printf("No you're a %s\n", input);
+        free(input);
     }
     return 0;
 }
